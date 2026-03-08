@@ -1,0 +1,6 @@
+(border_width: 1,
+margin: 10,
+default_border_color: "{{color2}}",
+floating_border_color: "{{color4}}",
+focused_border_color: "{{color7}}",
+)

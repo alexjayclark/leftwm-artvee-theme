@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 export SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
-
 #down the last running theme
 if [ -f "/tmp/leftwm-theme-down" ]; then
     /tmp/leftwm-theme-down
@@ -17,14 +16,39 @@ elif [ -x "$(command -v compton)" ]; then
   compton &> /dev/null &
 fi
 
-#set the theme.ron config
-leftwm-command "LoadTheme $SCRIPTPATH/theme.ron"
-
-#set background
+#set background using pywal
 if [ -x "$(command -v wal)" ]; then
-  wal -i ~/Pictures/wallpapers/ #make this a dir in the theme
+  wal -i ~/Pictures/wallpapers/ #TD make this a dir in the theme
 fi
 
+#load pywal colors as shell variables
+source ~/.cache/wal/colors.sh
+
+#use sed to add pywal colors to theme.ron.template, save as new theme.ron file
+sed \
+  -e "s|{{background}}|$background|g" \
+  -e "s|{{foreground}}|$foreground|g" \
+  -e "s|{{cursor}}|$cursor|g" \
+  -e "s|{{color0}}|$color0|g" \
+  -e "s|{{color1}}|$color1|g" \
+  -e "s|{{color2}}|$color2|g" \
+  -e "s|{{color3}}|$color3|g" \
+  -e "s|{{color4}}|$color4|g" \
+  -e "s|{{color5}}|$color5|g" \
+  -e "s|{{color6}}|$color6|g" \
+  -e "s|{{color7}}|$color7|g" \
+  -e "s|{{color8}}|$color8|g" \
+  -e "s|{{color9}}|$color9|g" \
+  -e "s|{{color10}}|$color10|g" \
+  -e "s|{{color11}}|$color11|g" \
+  -e "s|{{color12}}|$color12|g" \
+  -e "s|{{color13}}|$color13|g" \
+  -e "s|{{color14}}|$color14|g" \
+  -e "s|{{color15}}|$color15|g" \
+  "$SCRIPTPATH/theme.ron.template" > "$SCRIPTPATH/theme.ron"
+
+#load newly generated theme.ron config
+leftwm-command "LoadTheme $SCRIPTPATH/theme.ron"
 
 index=0
 monitors="$(polybar -m | sed s/:.*//)"
