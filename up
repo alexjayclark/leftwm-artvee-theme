@@ -18,7 +18,7 @@ fi
 
 #set background using pywal
 if [ -x "$(command -v wal)" ]; then
-  wal -i ~/Pictures/wallpapers/ #TD make this a dir in the theme
+  wal -i ~/Pictures/wallpapers/ --saturate 0.5 #TD make this a dir in the theme
 fi
 
 #load pywal colors as shell variables
@@ -49,6 +49,9 @@ sed \
 
 #load newly generated theme.ron config
 leftwm-command "LoadTheme $SCRIPTPATH/theme.ron"
+
+#generate labels for polybar
+export FS_MOUNTED_LABEL="%{F$color2}%mountpoint%%{F-} %percentage_used%%" 	
 
 index=0
 monitors="$(polybar -m | sed s/:.*//)"
